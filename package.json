@@ -1,0 +1,118 @@
+{
+  "name": "orbstack-toolkit",
+  "displayName": "OrbStack Toolkit",
+  "description": "Manage and inspect OrbStack machines from VS Code.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.88.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "orbstack.refresh",
+        "title": "Refresh Machines",
+        "category": "OrbStack"
+      },
+      {
+        "command": "orbstack.startMachine",
+        "title": "Start Machine",
+        "category": "OrbStack"
+      },
+      {
+        "command": "orbstack.stopMachine",
+        "title": "Stop Machine",
+        "category": "OrbStack"
+      },
+      {
+        "command": "orbstack.openShell",
+        "title": "Open Machine Shell",
+        "category": "OrbStack"
+      },
+      {
+        "command": "orbstack.copyIp",
+        "title": "Copy Machine IP",
+        "category": "OrbStack"
+      },
+      {
+        "command": "orbstack.showMachines",
+        "title": "Show Machines",
+        "category": "OrbStack"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "orbstack",
+          "title": "OrbStack",
+          "icon": "resources/orb.svg"
+        }
+      ]
+    },
+    "views": {
+      "orbstack": [
+        {
+          "id": "orbstackMachines",
+          "name": "Machines"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "orbstack.refresh",
+          "when": "view == orbstackMachines",
+          "group": "navigation"
+        },
+        {
+          "command": "orbstack.showMachines",
+          "when": "view == orbstackMachines",
+          "group": "navigation@1"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "orbstack.startMachine",
+          "when": "view == orbstackMachines && viewItem == machineStopped",
+          "group": "inline"
+        },
+        {
+          "command": "orbstack.stopMachine",
+          "when": "view == orbstackMachines && viewItem == machineRunning",
+          "group": "inline"
+        },
+        {
+          "command": "orbstack.openShell",
+          "when": "view == orbstackMachines && viewItem == machineRunning",
+          "group": "inline@1"
+        },
+        {
+          "command": "orbstack.openShell",
+          "when": "view == orbstackMachines && viewItem == machineStopped",
+          "group": "inline@1"
+        },
+        {
+          "command": "orbstack.copyIp",
+          "when": "view == orbstackMachines && viewItem == machineRunning",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "npm run check-types && node ./esbuild.js",
+    "watch": "node ./esbuild.js --watch",
+    "check-types": "tsc --noEmit -p ./",
+    "package": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.42",
+    "@types/vscode": "^1.88.0",
+    "esbuild": "^0.25.5",
+    "typescript": "^5.8.3"
+  }
+}
